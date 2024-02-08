@@ -1,0 +1,66 @@
+# 🏃‍♀️ Continuous Integration and Delivery: Unstable
+# =================================================
+#
+# Note: for this workflow to succeed, the following secrets must be installed
+# in the repository (or inherited from the repository's organization):
+#
+# ``ADMIN_GITHUB_TOKEN``
+#     A personal access token of a user with collaborator or better access to
+#     the project repository. You can generate this by visiting GitHub →
+#     Settings → Developer settings → Personal access tokens → Generate new
+#     token. Give the token scopes on ``repo``, ``write:packages``,
+#     ``delete:packages``, ``workflow``, and ``read:gpg_key``.
+# ``TBD`` — token or API key for npmjs.com?
+
+
+---
+
+name: 🤪 Unstable integration & delivery
+
+
+# Driving Event
+# -------------
+#
+# What event starts this workflow: a push to ``main`` (or ``master`` in old
+# parlance). For the "glob++" pattern syntax, see https://git.io/JJZQt
+
+on:
+    push:
+        branches:
+             - main
+        paths-ignore:
+            - 'CHANGELOG.md'
+            - 'docs/requirements/**'
+    workflow_dispatch:
+
+
+# What to Do
+# ----------
+#
+# Round up, yee-haw!
+
+jobs:
+    unstable-assembly:
+        name: 🧩 Unstable Assembly
+        if: github.actor != 'pdsen-ci'
+        runs-on: ubuntu-latest
+        steps:
+            -
+                name: 💳 Checkout
+                uses: actions/checkout@v2
+                with:
+                    lfs: true
+                    token: ${{secrets.ADMIN_GITHUB_TOKEN}}
+                    fetch-depth: 0
+            -
+                name: 🤠 Roundup
+                uses: nasa-pds-engineering-node/roundup-action@main
+                with:
+                    assembly: unstable
+                env:
+                    ADMIN_GITHUB_TOKEN: ${{secrets.ADMIN_GITHUB_TOKEN}}
+                    # TBD: the npmjs.com tokens
+
+...
+
+# -*- mode: yaml; indent: 4; fill-column: 120; coding: utf-8 -*-
