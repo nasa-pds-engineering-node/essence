@@ -59,7 +59,7 @@ jobs:
                     assembly: unstable
                 env:
                     ADMIN_GITHUB_TOKEN: ${{secrets.ADMIN_GITHUB_TOKEN}}
-                    # TBD: the npmjs.com tokens
+                    NPMJS_COM_TOKEN: ${{secrets.NPMJS_COM_TOKEN}}
 
 ...
 
