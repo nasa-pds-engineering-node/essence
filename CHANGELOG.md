@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.0-unstable](https://github.com/nasa-pds-engineering-node/essence/tree/v0.1.0-unstable) (2024-03-04)
+
+[Full Changelog](https://github.com/nasa-pds-engineering-node/essence/compare/v0.0.0-unstable...v0.1.0-unstable)
+
 ## [v0.0.0-unstable](https://github.com/nasa-pds-engineering-node/essence/tree/v0.0.0-unstable) (2024-03-04)
 
 [Full Changelog](https://github.com/nasa-pds-engineering-node/essence/compare/480739a58055af56222554fec7cb746eefc35cf6...v0.0.0-unstable)
