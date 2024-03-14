@@ -41,5 +41,5 @@
         "preview": "vite preview",
         "test": "jest --passWithNoTests"
     },
-    "version": "0.1.5-unstable"
+    "version": "0.1.6-unstable"
 }
