@@ -56,9 +56,6 @@ jobs:
                 uses: hashicorp/setup-terraform@v3
                 with:
                     terraform_version: "1.8.4"
-                env:
-                    AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-                    AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
             -
                 name: 🔬 Terraform initialization and validation
                 run: |
@@ -71,6 +68,9 @@ jobs:
             -
                 name: 🛫 Terraform application of new delivery
                 run: terraform apply -no-color -auto-approve
+                env:
+                    AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+                    AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
 
 ...
 
