@@ -1,0 +1,77 @@
+# 🔧 Development Workflows
+# ========================
+#
+# Note: for these workflows to succeed, the following secrets must be
+# installed in the repository (or inherited from the repository's
+# organization):
+#
+# - `AWS_ACCESS_KEY_ID` — access key for Amazon Web Services of the account to
+#   which to deliver this software
+# - `AWS_SECRET_ACCESS_KEY` — secret key to go with `AWS_ACCESS_KEY_ID`
+# - `ADMIN_GITHUB_TOKEN` — Personal access token of a user with collaborator
+#   or better access to the project repository.
+
+
+---
+
+name: 🔧 Development 
+
+
+# Driving Event
+# -------------
+#
+# What event starts this workflow: a push to `develop`
+
+on:
+    push:
+        branches:
+             - develop
+        paths-ignore:
+            - 'CHANGELOG.md'
+            - 'docs/requirements/**'
+    workflow_dispatch:
+
+
+# What to Do
+# ----------
+#
+# Deliver to run in AWS (whether this is an EC2, Fargate, or something else is
+# up to the Terraform files).
+
+jobs:
+    development-delivery:
+        name: 📪 Development Delivery
+        if: github.actor != 'pdsen-ci'
+        runs-on: ubuntu-latest
+        steps:
+            -
+                name: 💳 Checkout
+                uses: actions/checkout@v2
+                with:
+                    lfs: true
+                    token: ${{secrets.ADMIN_GITHUB_TOKEN}}
+                    fetch-depth: 0
+            -
+                name: 🌍 Terraform Setup
+                uses: hashicorp/setup-terraform@v3
+                with:
+                    terraform_version: "1.8.4"
+                env:
+                    AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+                    AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            -
+                name: 🔬 Terraform initialization and validation
+                run: |
+                    terraform init -no-color
+                    terraform validate -no-color
+            -
+                name: 💥 Terraform destruction of any existing delivery
+                run: terraform apply -destroy -no-color -auto-approve
+                continue-on-error: true
+            -
+                name: 🛫 Terraform application of new delivery
+                run: terraform apply -no-color -auto-approve
+
+...
+
+# -*- mode: yaml; indent: 4; fill-column: 120; coding: utf-8 -*-
