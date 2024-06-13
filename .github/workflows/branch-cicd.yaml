@@ -41,7 +41,7 @@ jobs:
                 name: 🟢 Setup up Node
                 uses: actions/setup-node@v4
                 with:
-                    node-version: 'lts'
+                    node-version: 'latest'
             -
                 name: 🩺 Test Software
                 run:
